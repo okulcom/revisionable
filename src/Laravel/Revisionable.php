@@ -4,6 +4,8 @@ namespace Sofa\Revisionable\Laravel;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use BackedEnum;
+use DateTime;
 
 trait Revisionable
 {
@@ -93,19 +95,24 @@ trait Revisionable
         return $this->prepareAttributes($attributes);
     }
 
-    /**
+        /**
      * Stringify revisionable attributes.
      *
-     * @param array $attributes
      *
      * @return array
      */
     protected function prepareAttributes(array $attributes)
     {
         return array_map(function ($attribute) {
-            return ($attribute instanceof DateTime)
-                ? $this->fromDateTime($attribute)
-                : (string) $attribute;
+            if ($attribute instanceof DateTime) {
+                return $this->fromDateTime($attribute);
+            }
+
+            if ($attribute instanceof BackedEnum) {
+                return $this->value;
+            }
+
+            return (string) $attribute;
         }, $attributes);
     }
 
