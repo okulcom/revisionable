@@ -112,8 +112,18 @@ trait Revisionable
                 return $this->value;
             }
 
+            if (is_string($attribute) && $this->isJson($attribute)) {
+                return json_encode(json_decode($attribute), JSON_PRETTY_PRINT);
+            }
+
             return (string) $attribute;
         }, $attributes);
+    }
+
+    private function isJson(string $string): bool
+    {
+        $decoded = json_decode($string, true);
+        return json_last_error() === JSON_ERROR_NONE && is_array($decoded);
     }
 
     /**
