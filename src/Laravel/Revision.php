@@ -79,7 +79,7 @@ class Revision extends Model
      */
     public function getUpdated()
     {
-        return array_keys(array_diff_assoc($this->new, $this->old));
+        return array_keys(array_diff_assoc_recursive($this->new, $this->old));
     }
 
     /**
@@ -119,7 +119,7 @@ class Revision extends Model
      */
     public function getOldAttribute($old)
     {
-        return (array) json_decode($old);
+        return (array) json_decode($old, true);
     }
 
     /**
@@ -129,7 +129,7 @@ class Revision extends Model
      */
     public function getNewAttribute($new)
     {
-        return (array) json_decode($new);
+        return (array) json_decode($new, true);
     }
 
     /**

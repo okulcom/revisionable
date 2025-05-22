@@ -26,6 +26,9 @@
     "autoload": {
         "psr-4": {
             "Sofa\\Revisionable\\": "src"
-        }
+        },
+        "files": [
+            "functions.php"
+        ]
     }
 }

@@ -68,7 +68,7 @@ trait Revisionable
      */
     public function getDiff()
     {
-        return array_diff_assoc($this->getNewAttributes(), $this->getOldAttributes());
+        return array_diff_assoc_recursive($this->getNewAttributes(), $this->getOldAttributes());
     }
 
     /**
@@ -112,8 +112,18 @@ trait Revisionable
                 return $this->value;
             }
 
+            if (is_string($attribute) && $this->isJson($attribute)) {
+                return json_decode($attribute, true);
+            }
+
             return (string) $attribute;
         }, $attributes);
+    }
+
+    private function isJson(string $string): bool
+    {
+        $decoded = json_decode($string, true);
+        return json_last_error() === JSON_ERROR_NONE && is_array($decoded);
     }
 
     /**
