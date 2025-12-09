@@ -112,6 +112,10 @@ trait Revisionable
                 return $this->value;
             }
 
+            if (is_numeric($attribute)){
+                return floatval($attribute);
+            }
+
             if (is_string($attribute) && $this->isJson($attribute)) {
                 return json_decode($attribute, true);
             }
