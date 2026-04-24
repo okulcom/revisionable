@@ -120,6 +120,12 @@ trait Revisionable
                 return json_decode($attribute, true);
             }
 
+            if ($attribute instanceof \Illuminate\Database\Query\Expression) {
+                return (string) $attribute->getValue(
+                    $this->getConnection()->getQueryGrammar(),
+                );
+            }
+
             return (string) $attribute;
         }, $attributes);
     }
