@@ -109,7 +109,13 @@ trait Revisionable
             }
 
             if ($attribute instanceof BackedEnum) {
-                return $this->value;
+                return (string) $attribute->value; // mevcut bug fix
+            }
+
+            if ($attribute instanceof \Illuminate\Database\Query\Expression) {
+                return (string) $attribute->getValue(
+                    $this->getConnection()->getQueryGrammar(),
+                );
             }
 
             if (is_numeric($attribute)){
